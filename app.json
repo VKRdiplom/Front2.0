@@ -6,6 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "androidStatusBar": {
+      "hidden": true
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -22,6 +25,20 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "expo": {
+      "plugins": [
+        [
+          "expo-font",
+          {
+            "fonts": [
+              "./assets/fonts/SF-Pro-Display-Bold.otf",
+              "./assets/fonts/SF-Pro-Display-Medium.otf",
+              "./assets/fonts/SF-Pro-Display-Regular.otf"
+            ]
+          }
+        ]
+      ]
     }
   }
 }
