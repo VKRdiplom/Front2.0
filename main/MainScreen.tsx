@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,7 +7,8 @@ import {
   TextInput,
   Dimensions,
   ScrollView,
-  StyleSheet,
+  Pressable,
+  Image
 } from "react-native";
 
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
@@ -122,20 +123,29 @@ export default function Main() {
     }
   };
 
+  const handleProfile = () => {
+    // if (navigation) {
+    //   navigation.navigate(LoginName as never);
+    // }
+  };
+
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#FFF" }}>
-      Вот тут!!!!!!
+    <ScrollView style={{ flex: 1, backgroundColor: "#E4E4E7" }}>
+      <View style={{ ...styles.container, width: 360, height: 52, marginTop: 20, marginLeft: 15, marginRight: 15 }}>
+        <View style={{ ...styles.container, width: 162, height: 52, flexDirection: 'column', alignItems: 'flex-start' }}>
+          <Text style={{ ...styles.textLabel }}>Владислав</Text>
+          <Text style={styles.textTitle}>Финансы</Text>
+        </View>
+        <View>
+          <Pressable onPress={handleProfile}>
+            <Image
+              source={require('../assets/mainscreenprofile.png')}
+              style={{ ...styles.imageProfile, marginLeft: 146 }}
+            />
+          </Pressable>
+        </View>
+      </View>
       <View style={{ padding: 20 }}>
-        <Text
-          style={{
-            fontSize: 24,
-            fontWeight: "bold",
-            marginBottom: 20,
-            color: "#333",
-          }}
-        >
-          Финансы
-        </Text>
         <View
           style={{
             flexDirection: "row",
