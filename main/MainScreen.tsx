@@ -84,7 +84,7 @@ export default function Main() {
     return (
       <View
         style={{
-          width: "50%",
+          width: 11,
           height: "100%",
           justifyContent: "flex-end",
           alignItems: "center",
@@ -93,7 +93,7 @@ export default function Main() {
       >
         <View
           style={{
-            width: 10,
+            width: 8,
             height: `${percentage}%`,
             backgroundColor: color,
             borderRadius: 5,
@@ -131,21 +131,21 @@ export default function Main() {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#E4E4E7" }}>
-      <View style={{ ...styles.container, width: 360, height: 52, marginTop: 20, marginLeft: 15, marginRight: 15 }}>
-        <View style={{ ...styles.container, width: 162, height: 52, flexDirection: 'column', alignItems: 'flex-start' }}>
-          <Text style={{ ...styles.textLabel }}>Владислав</Text>
-          <Text style={styles.textTitle}>Финансы</Text>
-        </View>
-        <View>
-          <Pressable onPress={handleProfile}>
-            <Image
-              source={require('../assets/mainscreenprofile.png')}
-              style={{ ...styles.imageProfile, marginLeft: 146 }}
-            />
-          </Pressable>
-        </View>
+        <View style={{ padding: 20 }}>
+        <View style={{ ...styles.container, width: 352, height: 52, justifyContent: 'space-between', marginBottom: 20 }}>
+          <View style={{ ...styles.container, width: '60%', height: 52, flexDirection: 'column', alignItems: 'flex-start' }}>
+            <Text style={{ ...styles.textLabel }}>Владислав</Text>
+            <Text style={styles.textTitle}>Финансы</Text>
+          </View>
+          <View>
+            <Pressable onPress={handleProfile}>
+              <Image
+                source={require('../assets/mainscreenprofile.png')}
+                style={{ ...styles.imageProfile }}
+              />
+            </Pressable>
+          </View>
       </View>
-      <View style={{ padding: 20 }}>
         <View
           style={{
             flexDirection: "row",
@@ -177,7 +177,7 @@ export default function Main() {
         <View
           style={{
             width: "100%",
-            height: 200,
+            height: 90,
             backgroundColor: "#FFF",
             borderRadius: 10,
             padding: 15,
@@ -192,7 +192,7 @@ export default function Main() {
           <View
             style={{
               width: "100%",
-              height: "100%",
+              height: "85%",
               flexDirection: "row",
               justifyContent: "space-around",
             }}
@@ -202,16 +202,18 @@ export default function Main() {
                 key={index}
                 onPress={() => openModal(index)}
                 style={{
-                  alignItems: "center",
+                  // alignSelf: "center",
                   width: "14.28%",
-                  padding: 10,
+                  alignItems: 'center',
                 }}
               >
                 <View
                   style={{
                     height: "100%",
+                    width: "100%",
                     flexDirection: "row",
                     alignItems: "flex-end",
+                    justifyContent: 'center',
                   }}
                 >
                   {renderBar(day.income, maxAmount, "#EAB308")}
