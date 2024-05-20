@@ -3,12 +3,13 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
-
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 
 import { styles } from './styles/GlobalStyles';
-import Main, { screenName as MainName } from './main/MainScreen'
+
+import Main, { screenName as MainName } from './main/MainScreen';
+import ProfilesScreen, { screenName as ProfileName } from './main/Profile';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -46,7 +47,7 @@ export default function App() {
         />
         <Stack.Navigator>
           <Stack.Screen name={MainName} component={Main} options={{ headerShown: false, statusBarStyle: 'auto'}} />
-
+          <Stack.Screen name={ProfileName} component={ProfilesScreen} options={{ headerShown: false, statusBarStyle: 'auto'}} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
