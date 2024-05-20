@@ -319,7 +319,7 @@ export default function Main() {
         </Text>
         <View
           style={{
-            marginBottom: 40,
+            marginBottom: 30,
             backgroundColor: "#FFF",
             borderRadius: 10,
             padding: 10,
@@ -378,7 +378,7 @@ export default function Main() {
         </Text>
         <View
           style={{
-            marginBottom: 40,
+            marginBottom: 30,
             backgroundColor: "#FFF",
             borderRadius: 10,
             padding: 10,
@@ -429,7 +429,9 @@ export default function Main() {
           backgroundColor: "#FFF",
           padding: 20,
           width: '100%',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          borderTopWidth: 0.4,
+          borderColor: '#A1A1AA',
         }}
       >
         <View style={{ alignItems: 'flex-start' }}>

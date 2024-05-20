@@ -10,6 +10,9 @@ import { styles } from './styles/GlobalStyles';
 
 import Main, { screenName as MainName } from './main/MainScreen';
 import ProfilesScreen, { screenName as ProfileName } from './main/Profile';
+import RegistrationScreen, { screenName as RegistrationName } from './main/RegistrationScreen';
+import LoginScreen, { screenName as LoginName } from './main/LoginScreen';
+import ForgotPasswordScreen, { screenName as ForgotPasswordName } from './main/ForgotPasswordScreen';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -46,6 +49,9 @@ export default function App() {
         <StatusBar style="auto"
         />
         <Stack.Navigator>
+          <Stack.Screen name={LoginName} component={LoginScreen} options={{ headerShown: false }} />
+          <Stack.Screen name={ForgotPasswordName} component={ForgotPasswordScreen} options={{ headerShown: false }} />
+          <Stack.Screen name={RegistrationName} component={RegistrationScreen} options={{ headerShown: false }} />
           <Stack.Screen name={MainName} component={Main} options={{ headerShown: false, statusBarStyle: 'auto'}} />
           <Stack.Screen name={ProfileName} component={ProfilesScreen} options={{ headerShown: false, statusBarStyle: 'auto'}} />
         </Stack.Navigator>
