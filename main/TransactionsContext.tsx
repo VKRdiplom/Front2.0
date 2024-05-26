@@ -6,13 +6,17 @@ interface TransactionsContextProps {
   addTransaction: (transaction: Transaction) => void;
 }
 
-export const TransactionsContext = createContext<TransactionsContextProps | undefined>(undefined);
+export const TransactionsContext = createContext<
+  TransactionsContextProps | undefined
+>(undefined);
 
 interface TransactionsProviderProps {
   children: ReactNode; // Определяем проп `children` как `ReactNode`
 }
 
-export const TransactionsProvider: React.FC<TransactionsProviderProps> = ({ children }) => {
+export const TransactionsProvider: React.FC<TransactionsProviderProps> = ({
+  children,
+}) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   const addTransaction = (transaction: Transaction) => {
@@ -25,4 +29,3 @@ export const TransactionsProvider: React.FC<TransactionsProviderProps> = ({ chil
     </TransactionsContext.Provider>
   );
 };
-

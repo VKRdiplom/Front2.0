@@ -9,34 +9,32 @@ import {
   ScrollView,
   Pressable,
   Image,
-  Switch
+  Switch,
 } from "react-native";
-
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/native';
-import { v4 as uuidv4 } from 'uuid';
-
-const { width } = Dimensions.get("window");
-const chartWidth = width * 0.9;
-const chartHeight = 200;
-
-import { styles, colors } from '../styles/GlobalStyles';
-import ProfilesScreen, { screenName as ProfileName } from './Profile';
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { RouteProp } from "@react-navigation/native";
+import { v4 as uuidv4 } from "uuid";
+import { styles, colors } from "../styles/GlobalStyles";
+import ProfilesScreen, { screenName as ProfileName } from "./Profile";
 import HistoryScreen, { screenName as HistoryName } from "./HistoryScreen";
 import { RootStackParamList, Transaction } from "./types";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { UserContext } from "./usercontext";
 import { TransactionsContext } from "./TransactionsContext";
 
-export const screenName = 'Main';
+export const screenName = "Main";
 
-type MainScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Main'>;
-type MainScreenRouteProp = RouteProp<RootStackParamList, 'Main'>;
+type MainScreenNavigationProp = StackNavigationProp<RootStackParamList, "Main">;
+type MainScreenRouteProp = RouteProp<RootStackParamList, "Main">;
+
+const { width } = Dimensions.get("window");
+const chartWidth = width * 0.9;
+const chartHeight = 200;
 
 export default function Main() {
   const navigation = useNavigation<MainScreenNavigationProp>();
-  const { Login: username, SetLogin: setUsername } = useContext(UserContext)
+  const { Login: username, SetLogin: setUsername } = useContext(UserContext);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [amount, setAmount] = useState("");
@@ -54,11 +52,13 @@ export default function Main() {
   const [monthlyExpense, setMonthlyExpense] = useState(0);
   const [budget, setBudget] = useState(0);
   const [savingsGoal, setSavingsGoal] = useState(0);
+  const [savingsTitleGoal, setSavingsTitleGoal] = useState("");
   const [balance, setBalance] = useState(0);
   const [budgetModalVisible, setBudgetModalVisible] = useState(false);
   const [goalModalVisible, setGoalModalVisible] = useState(false);
   const [budgetInput, setBudgetInput] = useState("");
   const [goalInput, setGoalInput] = useState("");
+  const [goalTitleInput, setGoalTitleInput] = useState("");
   const [isIncome, setIsIncome] = useState(true);
   const [selectedDate, setSelectedDate] = useState("01.01.2024");
   const [noteEnabled, setNoteEnabled] = useState(false);
@@ -95,7 +95,7 @@ export default function Main() {
   };
 
   const addAmount = () => {
-    const parsedAmount = parseFloat(amount);
+    const parsedAmount = parseFloat(amount) * (isIncome ? 1 : -1);
     if (!isNaN(parsedAmount)) {
       const updatedWeekData = [...weekData];
       if (parsedAmount >= 0) {
@@ -157,8 +157,10 @@ export default function Main() {
     const parsedGoal = parseFloat(goalInput);
     if (!isNaN(parsedGoal)) {
       setSavingsGoal(parsedGoal);
+      setSavingsTitleGoal(goalTitleInput);
       setGoalModalVisible(false);
       setGoalInput("");
+      setGoalTitleInput("");
     }
   };
 
@@ -179,17 +181,36 @@ export default function Main() {
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#E4E4E7" }} overScrollMode="never">
+    <ScrollView
+      style={{ flex: 1, backgroundColor: "#E4E4E7" }}
+      overScrollMode="never"
+    >
       <View style={{ padding: 20 }}>
-        <View style={{ ...styles.container, width: 352, height: 52, justifyContent: 'space-between', marginBottom: 20 }}>
-          <View style={{ ...styles.container, width: '60%', height: 52, flexDirection: 'column', alignItems: 'flex-start' }}>
+        <View
+          style={{
+            ...styles.container,
+            width: 352,
+            height: 52,
+            justifyContent: "space-between",
+            marginBottom: 20,
+          }}
+        >
+          <View
+            style={{
+              ...styles.container,
+              width: "60%",
+              height: 52,
+              flexDirection: "column",
+              alignItems: "flex-start",
+            }}
+          >
             <Text style={{ ...styles.textLabel }}>{username}</Text>
             <Text style={styles.textTitle}>Финансы</Text>
           </View>
           <View>
             <Pressable onPress={handleProfile}>
               <Image
-                source={require('../assets/mainscreenprofile.png')}
+                source={require("../assets/mainscreenprofile.png")}
                 style={{ ...styles.imageProfile }}
               />
             </Pressable>
@@ -201,7 +222,7 @@ export default function Main() {
               backgroundColor: "#FFF",
               borderRadius: 10,
               padding: 10,
-              shadowColor: '000000',
+              shadowColor: "000000",
               shadowOffset: {
                 width: 0,
                 height: 1,
@@ -214,7 +235,9 @@ export default function Main() {
             }}
           >
             <View style={{ alignItems: "center" }}>
-              <Text style={{ fontSize: 18, marginBottom: 5, color: "#333" }}>{monthlyIncome} ₽</Text>
+              <Text style={{ fontSize: 18, marginBottom: 5, color: "#333" }}>
+                {monthlyIncome} ₽
+              </Text>
               <Text style={{ color: "#777" }}>Доход за месяц</Text>
             </View>
           </View>
@@ -226,7 +249,7 @@ export default function Main() {
               backgroundColor: "#FFF",
               borderRadius: 10,
               padding: 10,
-              shadowColor: '000000',
+              shadowColor: "000000",
               shadowOffset: {
                 width: 0,
                 height: 1,
@@ -239,15 +262,15 @@ export default function Main() {
             }}
           >
             <View style={{ alignItems: "center" }}>
-              <Text style={{ fontSize: 18, marginBottom: 5, color: "#333" }}>{monthlyExpense} ₽</Text>
+              <Text style={{ fontSize: 18, marginBottom: 5, color: "#333" }}>
+                {monthlyExpense} ₽
+              </Text>
               <Text style={{ color: "#777" }}>Расход за месяц</Text>
             </View>
           </View>
         </View>
 
-
         <View style={{ height: 13 }} />
-
 
         <View
           style={{
@@ -279,7 +302,7 @@ export default function Main() {
                 style={{
                   // alignSelf: "center",
                   width: "14.28%",
-                  alignItems: 'center',
+                  alignItems: "center",
                 }}
               >
                 <View
@@ -288,7 +311,7 @@ export default function Main() {
                     width: "100%",
                     flexDirection: "row",
                     alignItems: "flex-end",
-                    justifyContent: 'center',
+                    justifyContent: "center",
                   }}
                 >
                   {renderBar(day.income, maxAmount, "#EAB308")}
@@ -318,7 +341,14 @@ export default function Main() {
               height: 30,
             }}
           >
-            <Text style={{ color: "#FFF", fontSize: 12, fontFamily: 'SF-Medium', textAlign: "center" }}>
+            <Text
+              style={{
+                color: "#FFF",
+                fontSize: 12,
+                fontFamily: "SF-Medium",
+                textAlign: "center",
+              }}
+            >
               Анализ
             </Text>
           </TouchableOpacity>
@@ -331,7 +361,14 @@ export default function Main() {
               height: 30,
             }}
           >
-            <Text style={{ color: "#FFF", fontSize: 12, fontFamily: 'SF-Medium', textAlign: "center" }}>
+            <Text
+              style={{
+                color: "#FFF",
+                fontSize: 12,
+                fontFamily: "SF-Medium",
+                textAlign: "center",
+              }}
+            >
               История
             </Text>
           </TouchableOpacity>
@@ -339,30 +376,32 @@ export default function Main() {
         <Text
           style={{
             fontSize: 16,
-            fontFamily: 'SF-Bold',
+            fontFamily: "SF-Bold",
             marginBottom: 5,
             color: "#333",
           }}
-          
         >
           Бюджет
         </Text>
-        <Text
-          style={{
-            ...styles.textLabel,
-            fontFamily: 'SF-Regular',
-            fontSize: 12,
-            marginBottom: 10,
-          }}>
-          Ваш план по расходам
-        </Text>
+        {budget === 0 && (
+          <Text
+            style={{
+              ...styles.textLabel,
+              fontFamily: "SF-Regular",
+              fontSize: 12,
+              marginBottom: 10,
+            }}
+          >
+            Ваш план по расходам
+          </Text>
+        )}
         <View
           style={{
             marginBottom: 30,
             backgroundColor: "#FFF",
             borderRadius: 10,
             padding: 10,
-            shadowColor: '000000',
+            shadowColor: "000000",
             shadowOffset: {
               width: 0,
               height: 1,
@@ -370,58 +409,75 @@ export default function Main() {
             shadowOpacity: 0.22,
             shadowRadius: 2.22,
             elevation: 2,
-            height: 'auto',
+            height: "auto",
           }}
         >
           {budget > 0 ? (
+            // TODO: сделать вместо скучного текста что-то приятненькое
             <Text style={{ color: "#777", marginBottom: 10 }}>
               Ваш план по расходам: {budget} ₽
             </Text>
           ) : null}
-          <TouchableOpacity
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: 28,
-              backgroundColor: "#EAB308",
-              justifyContent: "center",
-              alignItems: "center",
-              alignSelf: "center",
-            }}
-            onPress={() => setBudgetModalVisible(true)}
-          >
-            <Text style={{ color: "#FFF", fontSize: 24 }}>+</Text>
-          </TouchableOpacity>
-          <Text style={{ color: "#777", marginTop: 5, textAlign: "center", fontFamily: 'SF-Regular', fontSize: 12 }}>
-            Добавить цель
-          </Text>
+          {budget === 0 && (
+            <>
+              <TouchableOpacity
+                style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 28,
+                  backgroundColor: "#EAB308",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  alignSelf: "center",
+                }}
+                onPress={() => setBudgetModalVisible(true)}
+              >
+                <Text style={{ color: "#FFF", fontSize: 24 }}>+</Text>
+              </TouchableOpacity>
+
+              <Text
+                style={{
+                  color: "#777",
+                  marginTop: 5,
+                  textAlign: "center",
+                  fontFamily: "SF-Regular",
+                  fontSize: 12,
+                }}
+              >
+                Добавить бюджет
+              </Text>
+            </>
+          )}
         </View>
         <Text
           style={{
             fontSize: 16,
-            fontFamily: 'SF-Bold',
+            fontFamily: "SF-Bold",
             marginBottom: 5,
             color: "#333",
           }}
         >
           Денежная цель
         </Text>
-        <Text
-          style={{
-            ...styles.textLabel,
-            fontFamily: 'SF-Regular',
-            fontSize: 12,
-            marginBottom: 10,
-          }}>
-          Накопите или отложите средства
-        </Text>
+        {savingsGoal === 0 && (
+          <Text
+            style={{
+              ...styles.textLabel,
+              fontFamily: "SF-Regular",
+              fontSize: 12,
+              marginBottom: 10,
+            }}
+          >
+            Накопите или отложите средства
+          </Text>
+        )}
         <View
           style={{
             marginBottom: 30,
             backgroundColor: "#FFF",
             borderRadius: 10,
             padding: 10,
-            shadowColor: '000000',
+            shadowColor: "000000",
             shadowOffset: {
               width: 0,
               height: 1,
@@ -429,36 +485,54 @@ export default function Main() {
             shadowOpacity: 0.22,
             shadowRadius: 2.22,
             elevation: 2,
-            height: 'auto',
+            height: "auto",
           }}
         >
           {savingsGoal > 0 ? (
-            <Text style={{ color: "#777", marginBottom: 10 }}>
-              Накопите или отложите: {savingsGoal} ₽
-            </Text>
+            // TODO: сделать вместо скучного текста что-то приятненькое
+            <>
+              <Text style={{ color: "#777", marginBottom: 10 }}>
+                Накопите или отложите: {savingsGoal} ₽
+              </Text>
+              <Text style={{ color: "#777", marginBottom: 10 }}>
+                На вашу цель: {savingsTitleGoal}
+              </Text>
+            </>
           ) : null}
-          <TouchableOpacity
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: 28,
-              backgroundColor: "#EAB308",
-              justifyContent: "center",
-              alignItems: "center",
-              alignSelf: "center",
-            }}
-            onPress={() => setGoalModalVisible(true)}
-          >
-            <Text style={{ color: "#FFF", fontSize: 24 }}>+</Text>
-          </TouchableOpacity>
-          <Text style={{ color: "#777", marginTop: 5, textAlign: "center", fontFamily: 'SF-Regular', fontSize: 12 }}>
-            Добавить цель
-          </Text>
+          {savingsGoal === 0 && (
+            <>
+              <TouchableOpacity
+                style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 28,
+                  backgroundColor: "#EAB308",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  alignSelf: "center",
+                }}
+                onPress={() => setGoalModalVisible(true)}
+              >
+                <Text style={{ color: "#FFF", fontSize: 24 }}>+</Text>
+              </TouchableOpacity>
+              <Text
+                style={{
+                  color: "#777",
+                  marginTop: 5,
+                  textAlign: "center",
+                  fontFamily: "SF-Regular",
+                  fontSize: 12,
+                }}
+              >
+                Добавить цель
+              </Text>
+            </>
+          )}
         </View>
       </View>
       <View
         style={{
-          shadowColor: '000000',
+          shadowColor: "000000",
           shadowOffset: {
             width: 0,
             height: -1,
@@ -467,17 +541,17 @@ export default function Main() {
           shadowRadius: 2.22,
           backgroundColor: "#FFF",
           padding: 20,
-          width: '100%',
-          flexDirection: 'column',
+          width: "100%",
+          flexDirection: "column",
           borderTopWidth: 0.4,
-          borderColor: '#A1A1AA',
+          borderColor: "#A1A1AA",
         }}
       >
-        <View style={{ alignItems: 'flex-start' }}>
+        <View style={{ alignItems: "flex-start" }}>
           <Text
             style={{
               fontSize: 16,
-              fontFamily: 'SF-Bold',
+              fontFamily: "SF-Bold",
               marginBottom: 10,
               color: "#333",
             }}
@@ -485,11 +559,18 @@ export default function Main() {
             Текущий баланс
           </Text>
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
           <Text
             style={{
               fontSize: 20,
-              fontFamily: 'SF-Bold',
+              fontFamily: "SF-Bold",
               color: "#333",
               lineHeight: 28,
             }}
@@ -515,8 +596,8 @@ export default function Main() {
         <View
           style={{
             flex: 1,
-            justifyContent: 'flex-end',
-            alignItems: 'center',
+            justifyContent: "flex-end",
+            alignItems: "center",
             backgroundColor: "rgba(0, 0, 0, 0.5)",
           }}
         >
@@ -531,9 +612,19 @@ export default function Main() {
           >
             <View style={{ flexDirection: "row", marginBottom: 20 }}>
               <TouchableOpacity onPress={closeModal}>
-                <Text style={{ color: "#60A5FA", fontSize: 12, fontFamily: 'SF-Regular' }}>Закрыть</Text>
+                <Text
+                  style={{
+                    color: "#60A5FA",
+                    fontSize: 12,
+                    fontFamily: "SF-Regular",
+                  }}
+                >
+                  Закрыть
+                </Text>
               </TouchableOpacity>
-              <Text style={{ fontSize: 16, fontFamily: 'SF-Medium', }}>Добавить доходы</Text>
+              <Text style={{ fontSize: 16, fontFamily: "SF-Medium" }}>
+                Добавить доходы
+              </Text>
             </View>
 
             <Text style={{ fontSize: 16, marginBottom: 10 }}>Сумма</Text>
@@ -553,14 +644,17 @@ export default function Main() {
                 value={amount}
                 onChangeText={(text) => setAmount(text)}
               />
-              <TouchableOpacity onPress={() => setAmount("")} style={{
-                width: 40,
-                height: 40,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#E0E0E0",
-                borderRadius: 5,
-              }}>
+              <TouchableOpacity
+                onPress={() => setAmount("")}
+                style={{
+                  width: 40,
+                  height: 40,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "#E0E0E0",
+                  borderRadius: 5,
+                }}
+              >
                 <Text>✖️</Text>
               </TouchableOpacity>
             </View>
@@ -577,7 +671,9 @@ export default function Main() {
                 }}
                 onPress={() => setIsIncome(true)}
               >
-                <Text style={{ color: isIncome ? "#FFF" : "#000" }}>Доходы</Text>
+                <Text style={{ color: isIncome ? "#FFF" : "#000" }}>
+                  Доходы
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
@@ -590,11 +686,15 @@ export default function Main() {
                 }}
                 onPress={() => setIsIncome(false)}
               >
-                <Text style={{ color: isIncome ? "#000" : "#FFF" }}>Расходы</Text>
+                <Text style={{ color: isIncome ? "#000" : "#FFF" }}>
+                  Расходы
+                </Text>
               </TouchableOpacity>
             </View>
 
-            <Text style={{ fontSize: 16, marginBottom: 10 }}>Выберите категорию</Text>
+            <Text style={{ fontSize: 16, marginBottom: 10 }}>
+              Выберите категорию
+            </Text>
             <TouchableOpacity
               style={{
                 height: 40,
@@ -610,9 +710,17 @@ export default function Main() {
               <Text style={{ color: "#999" }}>Нажмите чтобы выбрать</Text>
             </TouchableOpacity>
 
-            <Text style={{ fontSize: 16, marginBottom: 10 }}>Дополнительные данные</Text>
+            <Text style={{ fontSize: 16, marginBottom: 10 }}>
+              Дополнительные данные
+            </Text>
             <View style={{ marginBottom: 20 }}>
-              <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
                 <Text style={{ fontSize: 16 }}>{selectedDate}</Text>
                 <Switch
                   value={noteEnabled}
@@ -743,6 +851,25 @@ export default function Main() {
               value={goalInput}
               onChangeText={(text) => setGoalInput(text)}
             />
+            <Text
+              style={{ fontSize: 18, marginBottom: 10, textAlign: "center" }}
+            >
+              На что копите?
+            </Text>
+            <TextInput
+              style={{
+                height: 40,
+                borderColor: "#CCC",
+                borderWidth: 1,
+                borderRadius: 5,
+                padding: 10,
+                marginBottom: 20,
+              }}
+              keyboardType="numeric"
+              placeholder="Машина..."
+              value={goalTitleInput}
+              onChangeText={(text) => setGoalTitleInput(text)}
+            />
             <TouchableOpacity
               style={{
                 backgroundColor: "#EAB308",
@@ -759,4 +886,4 @@ export default function Main() {
       </Modal>
     </ScrollView>
   );
-};
+}

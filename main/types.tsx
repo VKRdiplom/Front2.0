@@ -1,17 +1,16 @@
 export type RootStackParamList = {
-    Login: undefined;
-    Registration: undefined;
-    ForgotPassword: undefined;
-    Main: { username: string };
-    Profile: { username: string };
-    History: undefined;
-  };
+  Login: undefined;
+  Registration: undefined;
+  ForgotPassword: undefined;
+  Main: { username: string };
+  Profile: { username: string };
+  History: undefined;
+};
 
 export type usertype = {
-    Login: string;
-    SetLogin: Function;
-}
-
+  Login: string;
+  SetLogin: Function;
+};
 
 export type TransactionType = "income" | "expense";
 
