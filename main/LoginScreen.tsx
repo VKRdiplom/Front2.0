@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
 import { styles, colors } from '../styles/GlobalStyles';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 
+import { RootStackParamList } from '../main/types';
 import RegistrationScreen, { screenName as RegistrationName } from './RegistrationScreen';
 import ForgotPasswordScreen, { screenName as ForgotPasswordName } from './ForgotPasswordScreen';
+import MainScreen, { screenName as MainName } from './MainScreen';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { UserContext } from './usercontext';
 
 export const screenName = 'Login';
 
+type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
+
 export default function LoginScreen() {
-    const [username, setUsername] = useState('');
+    const{Login: username, SetLogin: setUsername} = useContext(UserContext)
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const navigation = useNavigation();
+    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
     const login = () => {
         if (!username) {
@@ -27,12 +33,13 @@ export default function LoginScreen() {
         setErrorMessage('');
         console.log('Вход успешен');
         // Здесь можно добавить логику входа, например, проверку данных на сервере
+        handleMain();
     };
 
     const handleMain = () => {
-        // if (navigation) {
-        //     navigation.navigate(MainName as never);
-        // }
+        if (navigation) {
+            navigation.navigate( MainName as never );
+        }
     };
     const handleRegistration = () => {
         if (navigation) {
@@ -53,7 +60,7 @@ export default function LoginScreen() {
                     style={styles.inputReg}
                     placeholder="Имя"
                     value={username}
-                    onChangeText={setUsername}
+                    onChangeText={(text) => setUsername(text)}
                     placeholderTextColor="gray500"
                 />
                 <TextInput

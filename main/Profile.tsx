@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Pressable, Image } from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; // Не забудьте установить библиотеку @expo/vector-icons
+import { Ionicons } from '@expo/vector-icons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from './types';
 
 import { styles, colors } from '../styles/GlobalStyles';
 import Main, { screenName as MainName } from './MainScreen';
+import { UserContext } from './usercontext';
 
 export const screenName = 'Profile';
 
+type ProfileScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Profile'>;
+
 export default function ProfilesScreen() {
-    const navigation = useNavigation();
+    // const navigation = useNavigation();
+    const navigation = useNavigation<ProfileScreenNavigationProp>();
+    const { Login: username, SetLogin: setUsername } = useContext(UserContext)
+
 
     const handleBackToMain = () => {
         if (navigation) {
@@ -40,12 +48,12 @@ export default function ProfilesScreen() {
     return (
         <View style={{ flex: 1 }}>
             <ScrollView style={styles.profileScreenContainer} contentContainerStyle={{ paddingBottom: 80 }}>
-                <Text style={{...styles.textTitle, marginBottom: 20}}>Профили</Text>
+                <Text style={{ ...styles.textTitle, marginBottom: 20 }}>Профили</Text>
                 <View style={styles.profileContainer}>
                     <View style={styles.profileInfo}>
                         <Image source={require('../assets/profile.png')} style={styles.profileImage} />
                         <View style={styles.profileText}>
-                            <Text style={styles.profileName}>Владислав</Text>
+                            <Text style={styles.profileName}>{username}</Text>
                             <Text style={styles.textLabel}>Баланс: 0 ₽</Text>
                         </View>
                     </View>
@@ -54,7 +62,7 @@ export default function ProfilesScreen() {
                     </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={{...styles.addAccountButton, flexDirection: 'row', justifyContent: 'flex-start'}} onPress={handleAddProfile}>
+                <TouchableOpacity style={{ ...styles.addAccountButton, flexDirection: 'row', justifyContent: 'flex-start' }} onPress={handleAddProfile}>
                     <TouchableOpacity
                         style={{
                             width: 42,

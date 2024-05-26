@@ -5,6 +5,9 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
+import { RootStackParamList } from './main/types';
+import { UserContext } from './main/usercontext';
+import { TransactionsProvider } from './main/TransactionsContext';
 
 import { styles } from './styles/GlobalStyles';
 
@@ -13,10 +16,18 @@ import ProfilesScreen, { screenName as ProfileName } from './main/Profile';
 import RegistrationScreen, { screenName as RegistrationName } from './main/RegistrationScreen';
 import LoginScreen, { screenName as LoginName } from './main/LoginScreen';
 import ForgotPasswordScreen, { screenName as ForgotPasswordName } from './main/ForgotPasswordScreen';
+import HistoryScreen, { screenName as HistoryName } from './main/HistoryScreen';
+
+
+SplashScreen.preventAutoHideAsync();
+
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
+  const [username, setUsername] = useState('');
 
   const [fontsLoaded, fontError] = useFonts({
     'SF-Bold': require('./assets/fonts/SF-Pro-Display-Bold.otf'),
@@ -44,19 +55,23 @@ export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
-    <View style={{width: '100%', height: '100%'}} onLayout={onLayoutRootView}>
-      <NavigationContainer>
-        <StatusBar style="auto"
-        />
-        <Stack.Navigator>
-          <Stack.Screen name={LoginName} component={LoginScreen} options={{ headerShown: false }} />
-          <Stack.Screen name={ForgotPasswordName} component={ForgotPasswordScreen} options={{ headerShown: false }} />
-          <Stack.Screen name={RegistrationName} component={RegistrationScreen} options={{ headerShown: false }} />
-          <Stack.Screen name={MainName} component={Main} options={{ headerShown: false, statusBarStyle: 'auto'}} />
-          <Stack.Screen name={ProfileName} component={ProfilesScreen} options={{ headerShown: false, statusBarStyle: 'auto'}} />
-        </Stack.Navigator>
-      </NavigationContainer>
+    <View style={{ width: '100%', height: '100%' }} onLayout={onLayoutRootView}>
+      <TransactionsProvider>
+        <UserContext.Provider value={{ Login: username, SetLogin: setUsername }}>
+          <NavigationContainer>
+            <StatusBar style="auto"
+            />
+            <Stack.Navigator initialRouteName={LoginName}>
+              <Stack.Screen name={LoginName} component={LoginScreen} options={{ headerShown: false }} />
+              <Stack.Screen name={ForgotPasswordName} component={ForgotPasswordScreen} options={{ headerShown: false }} />
+              <Stack.Screen name={RegistrationName} component={RegistrationScreen} options={{ headerShown: false }} />
+              <Stack.Screen name={MainName} component={Main} options={{ headerShown: false, statusBarStyle: 'auto' }} />
+              <Stack.Screen name={ProfileName} component={ProfilesScreen} options={{ headerShown: false, statusBarStyle: 'auto' }} />
+              <Stack.Screen name={HistoryName} component={HistoryScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </UserContext.Provider>
+      </TransactionsProvider>
     </View>
   );
-
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -14,6 +14,8 @@ import {
 
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { RouteProp } from '@react-navigation/native';
+import { v4 as uuidv4 } from 'uuid';
 
 const { width } = Dimensions.get("window");
 const chartWidth = width * 0.9;
@@ -21,10 +23,21 @@ const chartHeight = 200;
 
 import { styles, colors } from '../styles/GlobalStyles';
 import ProfilesScreen, { screenName as ProfileName } from './Profile';
+import HistoryScreen, { screenName as HistoryName } from "./HistoryScreen";
+import { RootStackParamList, Transaction } from "./types";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { UserContext } from "./usercontext";
+import { TransactionsContext } from "./TransactionsContext";
 
 export const screenName = 'Main';
 
+type MainScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Main'>;
+type MainScreenRouteProp = RouteProp<RootStackParamList, 'Main'>;
+
 export default function Main() {
+  const navigation = useNavigation<MainScreenNavigationProp>();
+  const { Login: username, SetLogin: setUsername } = useContext(UserContext)
+
   const [modalVisible, setModalVisible] = useState(false);
   const [amount, setAmount] = useState("");
   const [selectedDay, setSelectedDay] = useState(6);
@@ -50,7 +63,26 @@ export default function Main() {
   const [selectedDate, setSelectedDate] = useState("01.01.2024");
   const [noteEnabled, setNoteEnabled] = useState(false);
   const [note, setNote] = useState("");
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
+
+  // const transactionsContext = useContext(TransactionsContext);
+  // if (!transactionsContext) {
+  //   throw new Error("TransactionsContext is not provided");
+  // }
+  // const { addTransaction } = transactionsContext;
+
+  // const handleAddTransaction = () => {
+  //   if (amount) {
+  //     const transaction: Transaction = {
+  //       id: uuidv4(),
+  //       type: isIncome ? "income" : "expense",
+  //       amount: parseFloat(amount),
+  //       date: new Date().toISOString(),
+  //     };
+  //     addTransaction(transaction);
+  //     setAmount("");
+  //   }
+  // };
 
   const openModal = (day: React.SetStateAction<number>) => {
     setSelectedDay(day);
@@ -136,6 +168,12 @@ export default function Main() {
     }
   };
 
+  const handleHistory = () => {
+    if (navigation) {
+      navigation.navigate(HistoryName as never);
+    }
+  };
+
   const selectCategory = () => {
     // Реализация выбора категории
   };
@@ -145,7 +183,7 @@ export default function Main() {
       <View style={{ padding: 20 }}>
         <View style={{ ...styles.container, width: 352, height: 52, justifyContent: 'space-between', marginBottom: 20 }}>
           <View style={{ ...styles.container, width: '60%', height: 52, flexDirection: 'column', alignItems: 'flex-start' }}>
-            <Text style={{ ...styles.textLabel }}>Владислав</Text>
+            <Text style={{ ...styles.textLabel }}>{username}</Text>
             <Text style={styles.textTitle}>Финансы</Text>
           </View>
           <View>
@@ -305,6 +343,7 @@ export default function Main() {
             marginBottom: 5,
             color: "#333",
           }}
+          
         >
           Бюджет
         </Text>
